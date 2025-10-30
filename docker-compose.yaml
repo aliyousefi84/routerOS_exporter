@@ -1,0 +1,12 @@
+services:
+     exporter:
+       container_name: exporter
+       restart: always
+       build: .
+       environment:
+         - ROUTER_USER=admin
+         - ROUTER_PASSWORD=Admin@123
+         - ROUTER_ADDRESS=192.168.100.88:8728
+       ports:
+         - "9200:9200"
+       
