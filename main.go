@@ -3,18 +3,25 @@ package main
 import (
 	"fmt"
 
+	"github.com/aliyousefi84/routerOS_exporter/internal/prometheus"
 	routeros "github.com/aliyousefi84/routerOS_exporter/internal/routerOS"
 	"github.com/aliyousefi84/routerOS_exporter/server"
 )
 
 func main () {
+	prometheus.RegMetrics()
 	// pass Mik to Prometheus layer
-	if Mik , err:= routeros.Initialize(); err != nil {
+	Mik , err:= routeros.Initialize()
+	if err != nil {
 		fmt.Println(err)
 	}
+
+	apihandler := server.NewHandler(Mik)
+
+	srv := server.Init(apihandler)
+
 	
-	run := server.Init()
-	
-	run.RunSrv("localhost:9200" , nil)	
+	srv.RunSrv("192.168.10.1:9200" , nil)
 
 }
+

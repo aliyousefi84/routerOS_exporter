@@ -2,16 +2,19 @@ package routeros
 
 import (
 	"fmt"
+	"strconv"
 
+	"github.com/aliyousefi84/routerOS_exporter/internal/prometheus"
 	"github.com/go-routeros/routeros/v3"
 )
 
 
 
-
 type MikSvc struct {
 	conn *routeros.Client
+	Prom *prometheus.Collect
 }
+
 
 
 func  Initialize() (*MikSvc , error ) {
@@ -26,19 +29,24 @@ func  Initialize() (*MikSvc , error ) {
 	}, nil
 }
 
-func (m *MikSvc) GetCpu () {
-	reply , err := m.conn.Run("/system/resource/cpu/print")
 
+// return float 64 for cpu gauge metric
+func (m *MikSvc) GetCpu ()  {
+	reply , err := m.conn.Run("/system/resource/cpu/print")
 	if err != nil {
-		fmt.Println("invalid command")
+		fmt.Println("error , invalid command")
 		return
 	}
 
-	for _ , re := range reply.Re {
-		fmt.Printf("%v\n" , re.Map["load"])
-	}
+	Data := reply.Re[0].Map["load"]
 
+	load , _:= strconv.ParseFloat(Data , 64)
+
+	m.Prom.SetRouterCpuLoad(load)
+	
 }
+
+
 
 func (m *MikSvc) GetFreeMem () {
 	reply , err := m.conn.Run("/system/resource/print")
@@ -52,6 +60,9 @@ func (m *MikSvc) GetFreeMem () {
 		fmt.Printf("%v\n" , re.Map["free-memory"])
 	}
 }
+
+
+
 
 func (m *MikSvc) GetFreeSpace () {
 	reply , err := m.conn.Run("/system/resource/print")
