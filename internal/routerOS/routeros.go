@@ -44,7 +44,11 @@ func (m *MikSvc) GetCpu (ctx context.Context)  {
 	}
 	Data := reply.Re[0].Map["load"]
 
-	load , _:= strconv.ParseFloat(Data , 64)
+	load , err := strconv.ParseFloat(Data , 64)
+
+	if err != nil {
+		fmt.Println("can't parse this data")
+	}
 
 	fmt.Printf("your cpu load is %f\n" , load)
 

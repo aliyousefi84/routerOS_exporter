@@ -3,15 +3,17 @@ package config
 import "os"
 
 type Config struct {
-	Addr string
-	User string
-	Pass string
+	RoterAddr string
+	RouterUser string
+	RouterPass string
+	SrvAddr string
 }
 
 func  InitEnv () *Config {
 	return &Config{
-		Addr: os.Getenv("ROUTEROS_ADDRESS"),
-		User: os.Getenv("ROUTEROS_USER"),
-		Pass: os.Getenv("ROUTEROS_PASSWORD"),
+		RoterAddr: os.Getenv("ROUTEROS_ADDRESS"),
+		RouterUser: os.Getenv("ROUTEROS_USER"),
+		RouterPass: os.Getenv("ROUTEROS_PASSWORD"),
+		SrvAddr: os.Getenv("SERVER_ADDRESS"),
 	}
 }

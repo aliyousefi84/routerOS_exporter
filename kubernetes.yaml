@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: exporter-configmap
+
+data:
+  ROUTEROS_ADDRESS: 192.168.100.88:8728
+  ROUiTEROS_USER: ali
+  ROUTEROS_PASSWORD: Ali@1384
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: exporter-deployment
+  labels:
+    ex: mik
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      ex: mik
+  template:
+    metadata:
+      name: Ex-Pods
+      labels:
+        ex: mik
+    spec:
+      containers:
+        - name: mikrotik-exporter
+          image: aliyousefi84/mikrotik-exporter:v1.20
+          ports:
+            - containerPort: 9200
+          envFrom:
+            - configMapRef:
+                 name: exporter-configmap
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: ex-clusterip
+spec:
+  selector:
+    ex: mik
+  ports:
+    - port: 9200
+      targetPort: 9200
+---

@@ -8,7 +8,6 @@ import (
 
 type Server struct{
 	handler *Handler
-
 }
 
 func Init (handler *Handler) *Server {
