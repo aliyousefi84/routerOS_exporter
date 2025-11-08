@@ -3,10 +3,10 @@ services:
        container_name: exporter
        restart: always
        image: aliyousefi84/mikrotik-exporter:v1.20
-         #environment:
-         #ROUTEROS_USER: ali
-         #ROUTEROS_PASSWORD: Admin@123
-         #ROUTEROS_ADDRESS: 192.168.100.88:8728
+       environment:
+         - ROUTEROS_USER=admin
+         - ROUTEROS_PASSWORD=Admin@123
+         - ROUTEROS_ADDRESS=192.168.10.10:8728
        ports:
          - "9200:9200"
        
