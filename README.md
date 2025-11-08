@@ -58,5 +58,5 @@ services:
            aliyousefi84/mikroti-exporter:v1.20
 ## Deploy in kubernetes 
 
-    kubect apply -f kubernetes.yaml
+    kubectl apply -f kubernetes.yaml
     
