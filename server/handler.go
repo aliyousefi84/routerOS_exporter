@@ -10,46 +10,40 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-
 type Handler struct {
-	Mik *routeros.MikSvc	
+	Mik *routeros.MikSvc
 }
 
-func  NewHandler (Mik *routeros.MikSvc) *Handler{
+func NewHandler(Mik *routeros.MikSvc) *Handler {
 	return &Handler{
 		Mik: Mik,
-	} 
+	}
 }
 
-
-func (h *Handler) CheckApi (w http.ResponseWriter , r *http.Request) {
+func (h *Handler) CheckApi(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status": "ok",
+		"status":  "ok",
 		"message": "service is up",
-		"code": http.StatusOK,
+		"code":    http.StatusOK,
 	})
 }
 
-func (h *Handler) PromCheckMetrics (w http.ResponseWriter , r *http.Request) {
+func (h *Handler) PromCheckMetrics(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	ctx , cancel := context.WithTimeout(ctx , 3 * time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 
-	 h.Mik.GetCpu(ctx)
-	
-	 h.Mik.GetFreeMem(ctx)
-	
-	 h.Mik.GetFreeSpace(ctx)
-	 
-	 h.Mik.InetTrafikIn(ctx)
+	h.Mik.GetCpu(ctx)
 
-	 h.Mik.InetTrafikOut(ctx)
+	h.Mik.GetFreeMem(ctx)
 
-	 h.Mik.UserTrafik(ctx)
-	
-	promhttp.Handler().ServeHTTP(w , r)
+	h.Mik.GetFreeSpace(ctx)
+
+	h.Mik.InetTrafikIn(ctx)
+
+	h.Mik.InetTrafikOut(ctx)
+
+	h.Mik.UserTrafik(ctx)
+
+	promhttp.Handler().ServeHTTP(w, r)
 }
-
-
-
-

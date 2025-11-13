@@ -3,31 +3,30 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"os"
 )
 
-
-type Server struct{
+type Server struct {
 	handler *Handler
 }
 
-func Init (handler *Handler) *Server {
+func Init(handler *Handler) *Server {
 	return &Server{
 		handler: handler,
 	}
 }
 
+func (s *Server) RunSrv(addr string, handler http.Handler) {
 
-func (s *Server) RunSrv(addr string , handler http.Handler ) {
-	
-	
-	http.HandleFunc("GET /checkapi" , s.handler.CheckApi)
+	http.HandleFunc("GET /checkapi", s.handler.CheckApi)
 
-	http.HandleFunc("GET /metrics" , s.handler.PromCheckMetrics)
+	http.HandleFunc("GET /metrics", s.handler.PromCheckMetrics)
 
-	err := http.ListenAndServe(addr , handler)
+	err := http.ListenAndServe(addr, handler)
 
 	if err != nil {
-		fmt.Println("error to initialize server")
+		fmt.Printf("error to run server: %w\n", err)
+		os.Exit(1)
 	}
 
 }

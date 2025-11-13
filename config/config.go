@@ -3,17 +3,17 @@ package config
 import "os"
 
 type Config struct {
-	RoterAddr string
+	RoterAddr  string
 	RouterUser string
 	RouterPass string
-	SrvAddr string
+	SrvAddr    string
 }
 
-func  InitEnv () *Config {
-	return &Config{
-		RoterAddr: os.Getenv("ROUTEROS_ADDRESS"),
-		RouterUser: os.Getenv("ROUTEROS_USER"),
-		RouterPass: os.Getenv("ROUTEROS_PASSWORD"),
-		SrvAddr: os.Getenv("SERVER_ADDRESS"),
-	}
+func NewConfig() *Config {
+	cfg := &Config{}
+	cfg.RoterAddr = os.Getenv("ROUTEROS_ADDRESS")
+	cfg.RouterUser = os.Getenv("ROUTEROS_USER")
+	cfg.RouterPass = os.Getenv("ROUTEROS_PASSWORD")
+	cfg.SrvAddr = os.Getenv("SERVER_ADDRESS")
+	return cfg
 }
