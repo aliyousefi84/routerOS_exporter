@@ -82,5 +82,4 @@ func RegMetrics() {
 		mik_out_trafik,
 		mik_user_trafik,
 	)
-
 }

@@ -19,11 +19,14 @@ type MikSvc struct {
 }
 
 func Initialize(addr, user, pass string) (*MikSvc, error) {
+	if addr == "" || user == "" || pass == "" {
+		return nil, fmt.Errorf("error, address, user or password is empty")
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	conn, err := routeros.DialContext(ctx, addr, user, pass)
 	defer cancel()
 	if err != nil {
-		return nil, fmt.Errorf("error , problem to connect mikrotik routerOS")
+		return nil, fmt.Errorf("error , problem to connect mikrotik routerOS: %v", err)
 	}
 	fmt.Println("connection to routerOS successful")
 
