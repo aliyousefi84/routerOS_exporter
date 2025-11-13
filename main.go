@@ -13,7 +13,7 @@ import (
 func main() {
 	prometheus.RegMetrics()
 
-	Env := config.InitEnv()
+	Env := config.NewConfig()
 	Mik, err := routeros.Initialize(Env.RoterAddr, Env.RouterUser, Env.RouterPass)
 	if err != nil {
 		fmt.Println(err)
