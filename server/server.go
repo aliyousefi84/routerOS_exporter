@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"os"
 )
 
 type Server struct {
@@ -24,7 +25,8 @@ func (s *Server) RunSrv(addr string, handler http.Handler) {
 	err := http.ListenAndServe(addr, handler)
 
 	if err != nil {
-		fmt.Println("error to initialize server")
+		fmt.Printf("error to run server: %w\n", err)
+		os.Exit(1)
 	}
 
 }

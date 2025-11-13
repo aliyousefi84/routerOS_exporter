@@ -26,7 +26,7 @@ func Initialize(addr, user, pass string) (*MikSvc, error) {
 	conn, err := routeros.DialContext(ctx, addr, user, pass)
 	defer cancel()
 	if err != nil {
-		return nil, fmt.Errorf("error , problem to connect mikrotik routerOS: %v", err)
+		return nil, fmt.Errorf("error , problem to connect mikrotik routerOS: %w", err)
 	}
 	fmt.Println("connection to routerOS successful")
 
@@ -40,7 +40,7 @@ func (m *MikSvc) GetCpu(ctx context.Context) {
 
 	if err != nil {
 		if errors.Is(err, context.DeadlineExceeded) {
-			fmt.Println("problem to get metrics from cpu")
+			fmt.Printf("problem to get metrics from cpu: %w\n", err)
 			return
 		}
 	}
@@ -63,7 +63,7 @@ func (m *MikSvc) GetFreeMem(ctx context.Context) {
 
 	if err != nil {
 		if errors.Is(err, context.DeadlineExceeded) {
-			fmt.Println("problem to get metrics from memory")
+			fmt.Println("problem to get metrics from memory", err)
 			return
 		}
 	}
@@ -87,7 +87,7 @@ func (m *MikSvc) GetFreeSpace(ctx context.Context) {
 
 	if err != nil {
 		if errors.Is(err, context.DeadlineExceeded) {
-			fmt.Println("problem to get metrics from hard space")
+			fmt.Println("problem to get metrics from hard space", err)
 			return
 		}
 	}
@@ -109,7 +109,7 @@ func (m *MikSvc) InetTrafikIn(ctx context.Context) {
 
 	if err != nil {
 		if errors.Is(err, context.DeadlineExceeded) {
-			fmt.Println("problem to get metrics from interfaces")
+			fmt.Println("problem to get metrics from interfaces", err)
 			return
 		}
 	}
@@ -132,7 +132,7 @@ func (m *MikSvc) InetTrafikOut(ctx context.Context) {
 
 	if err != nil {
 		if errors.Is(err, context.DeadlineExceeded) {
-			fmt.Println("problem to get metrics from interfaces")
+			fmt.Println("problem to get metrics from interfaces", err)
 			return
 		}
 	}
@@ -154,7 +154,7 @@ func (m *MikSvc) UserTrafik(ctx context.Context) {
 	reply, err := m.conn.RunContext(ctx, "/ip/firewall/mangle/print")
 	if err != nil {
 		if errors.Is(err, context.DeadlineExceeded) {
-			fmt.Println("problem to get metrics from mangle roule")
+			fmt.Println("problem to get metrics from mangle roule", err)
 			return
 		}
 	}
